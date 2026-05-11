@@ -74,3 +74,23 @@ func DeleteConfiguration(c *gin.Context) {
 		"message": "Configuration deleted successfully",
 	})
 }
+
+func DeleteConfigurationByVersion(c *gin.Context) {
+	name := c.Param("name")
+	version := c.Param("version")
+
+	for id, config := range storage.Configurations {
+		if config.Name == name && config.Version == version {
+			delete(storage.Configurations, id)
+
+			c.JSON(http.StatusOK, gin.H{
+				"message": "Configuration deleted successfully",
+			})
+			return
+		}
+	}
+
+	c.JSON(http.StatusNotFound, gin.H{
+		"error": "Configuration not found",
+	})
+}
