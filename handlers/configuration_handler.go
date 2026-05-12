@@ -94,3 +94,30 @@ func DeleteConfigurationByVersion(c *gin.Context) {
 		"error": "Configuration not found",
 	})
 }
+
+func ReplaceConfiguration(c *gin.Context) {
+	id := c.Param("id")
+
+	_, exists := storage.Configurations[id]
+	if !exists {
+		c.JSON(http.StatusNotFound, gin.H{
+			"error": "Configuration not found",
+		})
+		return
+	}
+
+	var newConfig models.Configuration
+
+	if err := c.ShouldBindJSON(&newConfig); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Invalid JSON input",
+		})
+		return
+	}
+
+	newConfig.ID = id
+
+	storage.Configurations[id] = newConfig
+
+	c.JSON(http.StatusOK, newConfig)
+}

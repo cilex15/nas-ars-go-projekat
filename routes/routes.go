@@ -13,6 +13,7 @@ func SetupRoutes(router *gin.Engine) {
 	router.GET("/configurations/id/:id", handlers.GetConfigurationByID)
 	router.DELETE("/configurations/id/:id", handlers.DeleteConfiguration)
 	router.DELETE("/configurations/:name/:version", handlers.DeleteConfigurationByVersion)
+	router.PUT("/configurations/id/:id", handlers.ReplaceConfiguration)
 
 	router.POST("/groups", handlers.CreateGroup)
 	router.GET("/groups/:name/:version", handlers.GetGroup)
